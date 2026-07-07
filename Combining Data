@@ -1,0 +1,27 @@
+--Combining 12 month data into a new table called 'total_trip_data'
+
+CREATE TABLE `cyclistic_trips.total_trip_data` AS (
+  SELECT * FROM `new-project-495301.cyclistic_trips.2025_06_tripdata` 
+  UNION ALL
+  SELECT * FROM `new-project-495301.cyclistic_trips.2025_07_tripdata` 
+  UNION ALL
+  SELECT * FROM `new-project-495301.cyclistic_trips.2025_08_tripdata` 
+  UNION ALL
+  SELECT * FROM `new-project-495301.cyclistic_trips.2025_09_tripdata` 
+  UNION ALL
+  SELECT * FROM `new-project-495301.cyclistic_trips.2025_10_tripdata` 
+  UNION ALL
+  SELECT * FROM `new-project-495301.cyclistic_trips.2025_11_tripdata` 
+  UNION ALL
+  SELECT * FROM `new-project-495301.cyclistic_trips.2025_12_tripdata` 
+  UNION ALL
+  SELECT * FROM `new-project-495301.cyclistic_trips.2026_01_tripdata` 
+  UNION ALL
+  SELECT * FROM `new-project-495301.cyclistic_trips.2026_02_tripdata` 
+  UNION ALL
+  SELECT * FROM `new-project-495301.cyclistic_trips.2026_03_tripdata` 
+  UNION ALL
+  SELECT * FROM `new-project-495301.cyclistic_trips.2026_04_tripdata` 
+  UNION ALL
+  SELECT * FROM `new-project-495301.cyclistic_trips.2026_05_tripdata` 
+);
