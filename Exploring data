@@ -2,15 +2,18 @@
 SELECT COUNT(ride_id) FROM `new-project-495301.cyclistic_trips.total_trip_data`
 WHERE LENGTH(ride_id) <> 16 ;
 
+
 --Check rideable_type for types of bikes available
 SELECT DISTINCT rideable_type FROM `new-project-495301`.cyclistic_trips.total_trip_data ;
 --two different bikes are available, electric_bike and classic_bike
+
 
 --Check for number of rides that are less than one minute or longer than one day
 SELECT COUNT(*) FROM `new-project-495301`.cyclistic_trips.total_trip_data
 WHERE TIMESTAMP_DIFF(ended_at, started_at, minute) <= 1 OR
   TIMESTAMP_DIFF(ended_at, started_at, hour) >= 24 ;
 --290966 total rides
+
 
 --Check differnt names of start & stop stations
 SELECT DISTINCT start_station_name
@@ -20,11 +23,13 @@ SELECT DISTINCT end_station_name
 FROM `new-project-495301`.cyclistic_trips.total_trip_data;
 --1969 rows returned
 
+
 --Check different user types & Count number of trips by user type
 SELECT DISTINCT member_casual, COUNT(*) AS member_count
 FROM `new-project-495301`.cyclistic_trips.total_trip_data
 GROUP BY member_casual
 --3748438 members & 2100265 casual rideers
+
 
 --Check for total null values in each column
 SELECT 
@@ -42,3 +47,10 @@ SELECT
   COUNT(*) - COUNT(end_lng) AS end_lng,
   COUNT(*) - COUNT(member_casual) AS member_casual
 FROM `new-project-495301`.cyclistic_trips.total_trip_data
+
+
+--Check for duplicates using ride_id.
+SELECT ride_id, COUNT(ride_id) 
+FROM `new-project-495301`.cyclistic_trips.total_trip_data
+GROUP BY ride_id
+HAVING COUNT(ride_id) > 1;
