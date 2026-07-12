@@ -1,0 +1,17 @@
+--Create new table for cleaned data
+--Add columns for Month & Day of the week
+--Remove null values
+
+
+--Making new calculated column for Ride Length in minutes
+ALTER TABLE `new-project-495301`.cyclistic_trips.total_trip_data
+ADD COLUMN ride_length_min int64;
+
+UPDATE `new-project-495301`.cyclistic_trips.total_trip_data
+SET ride_length_sec = TIMESTAMP_DIFF(ended_at, started_at, minute)
+WHERE TRUE;
+
+
+
+--Remove duplicate rows
+
