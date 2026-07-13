@@ -1,17 +1,67 @@
 --Create new table for cleaned data
 --Add columns for Month & Day of the week
+--Exclude rides <1 minute >1 day
 --Remove null values
+DROP TABLE IF EXISTS `new-project-495301`.cyclistic_trips.cleaned_trip_data;
+
+CREATE TABLE `new-project-495301`.cyclistic_trips.cleaned_trip_data AS (
+  SELECT
+  ride_id, rideable_type, started_at, ended_at, start_station_name, start_station_id, end_station_name, end_station_id, start_lat, start_lng, end_lat, end_lng, member_casual,
+  CASE 
+  EXTRACT(month from started_at)
+    WHEN 1 THEN 'January'
+    WHEN 2 THEN 'February'
+    WHEN 3 THEN 'March'
+    WHEN 4 THEN 'April'
+    WHEN 5 THEN 'May'      
+    WHEN 6 THEN 'June'
+    WHEN 7 THEN 'July'
+    WHEN 8 THEN 'August'
+    WHEN 9 THEN 'September'
+    WHEN 10 THEN 'October'      
+    WHEN 11 THEN 'November'
+    WHEN 12 THEN 'December'
+  END AS month,
+  CASE
+  EXTRACT(DAYOFWEEK from started_at)
+    WHEN 1 THEN 'Sunday'
+    WHEN 2 THEN 'Monday'
+    WHEN 3 THEN 'Tuesday'
+    WHEN 4 THEN 'Wednesday'
+    WHEN 5 THEN 'Thursday'
+    WHEN 6 THEN 'Friday'
+    WHEN 7 THEN 'Saturday'    
+  END AS day_of_week,
+  FROM `new-project-495301`.cyclistic_trips.total_trip_data
+  WHERE
+    TIMESTAMP_DIFF(ended_at, started_at, minute) > 1 AND
+    TIMESTAMP_DIFF(ended_at, started_at, hour) < 24 AND
+    start_station_name IS NOT NULL AND
+    start_station_id IS NOT NULL AND
+    end_station_name IS NOT NULL AND
+    end_station_id IS NOT NULL AND
+    start_lat IS NOT NULL AND
+    start_lng IS NOT NULL AND
+    end_lat IS NOT NULL AND
+    end_lng IS NOT NULL 
+)
+--The new cleaned table has 3763934 rows, so 2084769 rows were deleted.
 
 
 --Making new calculated column for Ride Length in minutes
-ALTER TABLE `new-project-495301`.cyclistic_trips.total_trip_data
+ALTER TABLE `new-project-495301`.cyclistic_trips.cleaned_trip_data
 ADD COLUMN ride_length_min int64;
 
-UPDATE `new-project-495301`.cyclistic_trips.total_trip_data
-SET ride_length_sec = TIMESTAMP_DIFF(ended_at, started_at, minute)
+UPDATE `new-project-495301`.cyclistic_trips.cleaned_trip_data
+SET ride_length_min = TIMESTAMP_DIFF(ended_at, started_at, minute)
 WHERE TRUE;
 
 
-
+--Check new dataset for duplicate rows
+SELECT ride_id, COUNT(ride_id) 
+FROM `new-project-495301`.cyclistic_trips.cleaned_trip_data
+GROUP BY ride_id
+HAVING COUNT(ride_id) > 1;
+--19 duplicate rows found
 --Remove duplicate rows
 
