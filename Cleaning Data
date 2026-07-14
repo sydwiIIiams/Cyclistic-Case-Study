@@ -44,7 +44,7 @@ CREATE TABLE `new-project-495301`.cyclistic_trips.cleaned_trip_data AS (
     start_lng IS NOT NULL AND
     end_lat IS NOT NULL AND
     end_lng IS NOT NULL 
-)
+);
 --The new cleaned table has 3763934 rows, so 2084769 rows were deleted.
 
 
@@ -63,5 +63,14 @@ FROM `new-project-495301`.cyclistic_trips.cleaned_trip_data
 GROUP BY ride_id
 HAVING COUNT(ride_id) > 1;
 --19 duplicate rows found
---Remove duplicate rows
 
+--Remove duplicate rows
+CREATE TABLE `new-project-495301`.cyclistic_trips.unique_rides AS
+  SELECT DISTINCT *
+  FROM `new-project-495301`.cyclistic_trips.cleaned_trip_data;
+
+DROP TABLE `new-project-495301`.cyclistic_trips.cleaned_trip_data;
+
+ALTER TABLE `new-project-495301`.cyclistic_trips.unique_rides
+RENAME TO cleaned_trip_data;
+--3763915 rows remain
