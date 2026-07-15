@@ -1,0 +1,96 @@
+--Mean of ride_length by user type
+
+SELECT member_casual, avg(ride_length_min) AS avg_ride_length
+FROM `new-project-495301.cyclistic_trips.cleaned_trip_data` 
+GROUP BY member_casual;
+
+
+--Max of ride_length by user type
+
+SELECT member_casual, MAX(ride_length_min) AS max_ride_length
+FROM `new-project-495301.cyclistic_trips.cleaned_trip_data` 
+GROUP BY member_casual;
+
+
+--Number of trips per month by user type
+
+SELECT month, member_casual, COUNT(ride_id) AS number_of_rides
+FROM `new-project-495301`.cyclistic_trips.cleaned_trip_data
+GROUP BY month, member_casual
+ORDER BY month;
+
+
+--Number of rides per day of week by user type
+
+SELECT day_of_week, member_casual, COUNT(ride_id) AS number_of_rides
+FROM `new-project-495301`.cyclistic_trips.cleaned_trip_data
+GROUP BY day_of_week, member_casual
+ORDER BY day_of_week;
+
+
+--Average ride length for users by day of week
+
+SELECT day_of_week, member_casual, avg(ride_length_min) AS avg_ride_length
+FROM `new-project-495301`.cyclistic_trips.cleaned_trip_data
+GROUP BY day_of_week, member_casual
+ORDER BY day_of_week;
+
+
+--Average ride length for users by month
+
+SELECT month, member_casual, avg(ride_length_min) AS avg_ride_length
+FROM `new-project-495301`.cyclistic_trips.cleaned_trip_data
+GROUP BY month, member_casual
+ORDER BY month;
+
+
+--Bike type by user type
+
+SELECT member_casual, COUNT(rideable_type) AS bike_type
+FROM `new-project-495301`.cyclistic_trips.cleaned_trip_data
+GROUP BY member_casual;
+
+
+--Casual rider start station
+
+SELECT member_casual, start_station_name,
+AVG(start_lat) AS start_lat, 
+AVG(start_lng) AS start_lng,
+COUNT(ride_id) AS total_rides
+FROM `new-project-495301`.cyclistic_trips.cleaned_trip_data
+WHERE member_casual = 'casual'
+GROUP BY member_casual, start_station_name;
+
+
+--Casual rider end station
+
+SELECT member_casual, end_station_name,
+AVG(end_lat) AS end_lat, 
+AVG(end_lng) AS end_lng,
+COUNT(ride_id) AS total_rides
+FROM `new-project-495301`.cyclistic_trips.cleaned_trip_data
+WHERE member_casual = 'casual'
+GROUP BY member_casual, end_station_name;
+
+
+--Member rider start station
+
+SELECT member_casual, start_station_name,
+AVG(start_lat) AS start_lat, 
+AVG(start_lng) AS start_lng,
+COUNT(ride_id) AS total_rides
+FROM `new-project-495301`.cyclistic_trips.cleaned_trip_data
+WHERE member_casual = 'member'
+GROUP BY member_casual, start_station_name;
+
+
+--Member rider end station
+
+SELECT member_casual, end_station_name,
+AVG(end_lat) AS end_lat, 
+AVG(end_lng) AS end_lng,
+COUNT(ride_id) AS total_rides
+FROM `new-project-495301`.cyclistic_trips.cleaned_trip_data
+WHERE member_casual = 'member'
+GROUP BY member_casual, end_station_name;
+
