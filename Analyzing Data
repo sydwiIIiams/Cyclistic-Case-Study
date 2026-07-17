@@ -53,9 +53,9 @@ ORDER BY month;
 
 --Bike type by user type
 
-SELECT member_casual, COUNT(rideable_type) AS bike_type
+SELECT member_casual, rideable_type, COUNT(rideable_type) AS bike_type
 FROM `new-project-495301`.cyclistic_trips.cleaned_trip_data
-GROUP BY member_casual;
+GROUP BY member_casual, rideable_type;
 
 
 --Casual rider start station
